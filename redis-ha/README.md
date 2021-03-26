@@ -1,28 +1,14 @@
-# ⚠️ Repo Archive Notice
-
-As of Nov 13, 2020, charts in this repo will no longer be updated.
-For more information, see the Helm Charts [Deprecation and Archive Notice](https://github.com/helm/charts#%EF%B8%8F-deprecation-and-archive-notice), and [Update](https://helm.sh/blog/charts-repo-deprecation/).
-
 # Redis
-
-----------------------------------------
-# Deprecation Warning
-*As part of the [deprecation timeline](https://github.com/helm/charts/#deprecation-timeline). We will move this to an official repository [here](https://github.com/DandyDeveloper/charts)*
-
-Please make PRs / Issues here from now on
-
-We will keep the changes in sync as best we can, but we will be notifying people to submit PRs here from now on instead. If you have any questions, feel free to get in touch with either of the maintainers. 
-----------------------------------------
 
 [Redis](http://redis.io/) is an advanced key-value cache and store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets, sorted sets, bitmaps and hyperloglogs.
 
-## TL;DR;
+## 使用
 
 ```bash
 $ helm install stable/redis-ha
 ```
 
-By default this chart install 3 pods total:
+默认配置情况下，共启动三个`pod`实例:
  * one pod containing a redis master and sentinel container (optional prometheus metrics exporter sidecar available)
  * two pods each containing a redis slave and sentinel containers (optional prometheus metrics exporter sidecars available)
 
@@ -65,15 +51,16 @@ $ helm delete <chart-name>
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
-## Configuration
+## 配置项
 
-The following table lists the configurable parameters of the Redis chart and their default values.
+下表列出了`Redis chart`的可配置参数及其默认值
 
-| Parameter                 | Description                                                                                                                                                                                              | Default                                                                                    |
-|:--------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------|
-| `image`                   | Redis image                                                                                                                                                                                              | `redis`                                                                                    |
+| 参数                 | 描述                                                                                                                                                                                              | Default                                                                                                 |可选|
+|:--------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------|----|
+| `image`                   | Redis 镜像                                                                                                                                                                                              | `redis`                                                                                      |
+| `pullPolicy`              | 镜像拉取策略                                                                                                                                                                                              | `IfNotPresent`                                                                              |`Always`：不管镜像是否存在都会进行一次拉取；`Never`：不管镜像是否存在都不会进行拉取;`IfNotPresent`：只有镜像不存在时，才会进行镜像拉取。|
 | `imagePullSecrets`        | Reference to one or more secrets to be used when pulling redis images                                                                                                                                    | []                                                                                         |
-| `tag`                     | Redis tag                                                                                                                                                                                                | `5.0.6-alpine`                                                                             |
+| `tag`                     | Redis tag                                                                                                                                                                                                | `5.0.12-alpine`                                                                             |
 | `replicas`                | Number of redis master/slave pods                                                                                                                                                                        | `3`                                                                                        |
 | `serviceAccount.create`   | Specifies whether a ServiceAccount should be created                                                                                                                                                     | `true`                                                                                     |
 | `serviceAccount.name`     | The name of the ServiceAccount to create                                                                                                                                                                 | Generated using the redis-ha.fullname template                                             |
@@ -185,6 +172,14 @@ $ helm install -f values.yaml stable/redis-ha
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
+
+
+## Reference to one or more secrets to be used when pulling images
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+## This imagePullSecrets is only for redis images
+##
+imagePullSecrets: []
+# - name: "image-pull-secret"
 
 ## Custom Redis and Sentinel config options
 
